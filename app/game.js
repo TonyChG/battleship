@@ -15,7 +15,7 @@ function randomNumber(min, max) {
 }
 
 // Crée une nouvelle grille
-function newGrid(size) 
+function newGrid(size)
 {
   var grid = [];
   var Box = {
@@ -34,12 +34,12 @@ function newGrid(size)
 }
 
 // Affiche la grille dans la console
-function displayGridConsole(grid) 
+function displayGridConsole(grid)
 {
   for (y = 0; y < GRID_SIZE; y++) {
     for (x = 0; x < GRID_SIZE; x++) {
       console.log(grid[y][x].color);
-    } 
+    }
     console.log('\n');
   }
 }
@@ -95,7 +95,7 @@ function putShips (grid) {
   $.each(Ships, function(key, size){
     while (grid[y][x].ship !== 0) {
       x = randomNumber(0, GRID_SIZE-1);
-      y = randomNumber(0, GRID_SIZE-1);      
+      y = randomNumber(0, GRID_SIZE-1);
     }
     possibleDir = getDirections(grid, x, y, size);
     chooseDir = possibleDir[randomNumber(0, possibleDir.length)];
@@ -126,11 +126,9 @@ function initGridBox(playerGrid, computerGrid)
     if (index < 100) {
       $(this).attr('data-i', index);
       $(this).attr('grid-n', 1)
-      $(this).css({opacity: 0.3});
     } else {
       $(this).attr('data-i', index-100);
       $(this).attr('grid-n', 2)
-      $(this).css({opacity: 0.3});
     }
   })
 
@@ -140,7 +138,6 @@ function initGridBox(playerGrid, computerGrid)
 
   .bind('mouseleave', function() {
     $(this).css('border-color', '#000000');
-    $(this).css({opacity: 0.3});
   })
 
   .bind('click', function(click) {
@@ -208,7 +205,7 @@ function getDirSelected(lastY, lastX, clickY, clickX) {
 }
 
 function getShipSelection(grid) {
-  boatPlace = 0;  
+  boatPlace = 0;
   lastX = [];
   lastY = [];
 
@@ -242,12 +239,10 @@ function getShipSelection(grid) {
   $('.box').each(function(index){
     if (index < 100) {
       $(this).attr('data-i', index);
-      $(this).attr('grid-n', 1)
-      $(this).css({opacity: 0.3});
+      $(this).attr('grid-n', 1);
     } else {
       $(this).attr('data-i', index-100);
-      $(this).attr('grid-n', 2)
-      $(this).css({opacity: 0.3});
+      $(this).attr('grid-n', 2);
     }
   });
 }

@@ -1,0 +1,13 @@
+{
+    "startfile": "index.html",
+    "path": {
+        "sass": "scss/*.scss",
+        "css": ".",
+        "sourcemap": "."
+    },
+    "sass_opt": {
+        "outputStyle": "compressed"
+    },
+    "sass_error": "Error SCSS\nLook in the console for details",
+    "dev_url": "."
+}
