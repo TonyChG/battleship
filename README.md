@@ -1,3 +1,3 @@
-Un petit jeu de bataille navale
+# Un petit jeu de bataille navale
 
-Touché-Coulé !
+# Touché-Coulé !
