@@ -9,6 +9,12 @@
   }
 }
 
+@mixin box-sizing($type) {
+	box-sizing: #{$type}-box;
+	-webkit-box-sizing: #{$type}-box;
+	-moz-box-sizing: #{$type}-box;
+}
+
 @mixin font-text($size, $case, $weight) {
 	font-family:Arial, Helvetica, sans-serif;
 	font-weight:$weight;

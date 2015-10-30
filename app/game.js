@@ -143,7 +143,15 @@ function initAttrBox() {
       $(this).attr('data-i', index-100);
       $(this).attr('grid-n', 2)
     }
-  })  
+  })
+}
+
+//Print in console + inDom
+function debug_click() {
+    console.log('y', y, 'x', x, 'n', n);
+    $('#info>.data-x').html('<strong>x: '+ x +'</strong>');
+    $('#info>.data-y').html('<strong>y:'+ y +'</strong>');
+    $('#info>.data-n').html('<strong>n:'+ n +'</strong>');
 }
 
 // Initialise la grille de box
@@ -155,7 +163,7 @@ function clickGrid(playerGrid, computerGrid)
     x = $(this).attr('data-i') % 10;
     y = parseInt($(this).attr('data-i')/10);
     n = $(this).attr('grid-n');
-    console.log('y', y, 'x', x, 'n', n);
+    debug_click();
     if (n == 1) {
       $(this).css('background-color', '#0000FF');
     }
@@ -274,4 +282,7 @@ function mainGame()
   }
 }
 
-mainGame();
+$(document).ready(function(){
+    $('.grid1>div').clone().appendTo('.grid2');
+    mainGame();
+});

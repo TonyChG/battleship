@@ -2,6 +2,7 @@
 **
 ** Loads Plugins - first
 **
+** Luc Terracher - 2015
 */
 
 var gulp = require('gulp');
@@ -11,7 +12,20 @@ var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
 var plumber = require('gulp-plumber');
 var notify = require('gulp-notify');
+var concat = require('gulp-concat');
+var jshint = require('gulp-jshint');
+var uglify = require('gulp-uglify');
 var conf = require('./config.json');
+
+// [Task] Concat .js files
+gulp.task('js', function(){
+    return gulp.src(conf.path.js)
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'))
+        .pipe(uglify())
+        .pipe(concat('bundle.js'))
+        .pipe(gulp.dest(conf.path.build_js));
+});
 
 // [Task] Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', function() {
@@ -35,6 +49,7 @@ gulp.task('serve', ['sass'], function() {
         }
     });
 
+    gulp.watch(conf.path.js, ['js']);
     gulp.watch(conf.path.sass, ['sass']);
     gulp.watch(conf.startfile).on("change", browserSync.reload);
 });

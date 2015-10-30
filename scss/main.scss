@@ -4,35 +4,83 @@
 $grid_background: #848484;
 $grid_foreground: #2E64FE;
 
+*{
+	@include box-sizing(border);
+}
+
 body {
+    outline:0;
+    margin: 10px 0;
     background-color: $grid_background;
     animation-name: bg;
     animation-duration: 12s;
     animation-iteration-count: infinite;
-    .container {
+}
+
+.zone-title {
+    text-align: center; padding: 24px 34px 12px;
+
+    @include orb(64px, initial, bolder);
+}
+.container {
+    text-align: center; padding-top: 36px;
+    background-color: $grid_background;
+    .character {
+        @include orb(28px, initial, lighter);
+        padding: 20px 0;
+    }
+    .display {
+        padding: 12px; margin: 24px 0;
+        @include orb(28px, initial, lighter);
+    }
+    .box {
+        padding: 10px;
+        width: 20px; height: 20px;
+        border: 1px solid black;
+        margin-bottom: 2px;
+        background-color: #0040FF;
+        display: inline-block;
+        //@include opacity(.3);
+    }
+    .grid {
+        height: 350px;
+    }
+    .grid1, .grid2 {
+        padding: 25px 0;
+    }
+    .line { width: 100%; }
+}
+
+footer {
+    text-align: center; padding: 32px 0 21px;
+    @include orb(21px, uppercase, 400);
+}
+
+//DEBUG
+div#info {
+    position: fixed;
+    padding: 24px;
+    top: 20%; left: 2%;
+    background-color: #DC9C37;
+    border: 2px solid #403D38;
+
+    &>div {
         text-align: center;
-        background-color: $grid_background;
-        .display {
-            @include orb(28px, initial, lighter);
+        padding: 12px 0;
+        font-weight: 500;
+        &:first-child {
+            @include orb(14px, uppercase, 600);
+            text-transform: uppercase;
+            font-weight: 600;
         }
-        .character {
-            @include orb(28px, initial, lighter);
-            padding: 20px 0;
+        &:not(:first-child) {
+            color: white;
+            text-indent: 12px;
         }
-        .box {
-            padding: 10px;
-            width: 20px; height: 20px;
-            border: 1px solid black;
-            margin-bottom: 2px;
-            background-color: $grid_foreground;
-            display: inline-block;
-            // @include opacity(.8);
-        }
-        .grid { height: 350px; }
-        .line { width: 100%; }
     }
 }
 
+//keyframes
 @include keyframes(bg) {
     25%  {background-color: red;}
     50%  {background-color: yellow;}
