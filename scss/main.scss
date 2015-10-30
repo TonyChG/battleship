@@ -1,14 +1,20 @@
 @import url(https://fonts.googleapis.com/css?family=Orbitron:400,500,700);
 @import "mixins";
 
+$grid_background: #848484;
+$grid_foreground: #2E64FE;
+
 body {
-    background-color: brown;
+    background-color: $grid_background;
     animation-name: bg;
     animation-duration: 12s;
     animation-iteration-count: infinite;
     .container {
         text-align: center;
-        background-color: brown;
+        background-color: $grid_background;
+        .display {
+            @include orb(28px, initial, lighter);
+        }
         .character {
             @include orb(28px, initial, lighter);
             padding: 20px 0;
@@ -18,9 +24,9 @@ body {
             width: 20px; height: 20px;
             border: 1px solid black;
             margin-bottom: 2px;
-            background-color: #0040FF;
+            background-color: $grid_foreground;
             display: inline-block;
-            @include opacity(.3);
+            // @include opacity(.8);
         }
         .grid { height: 350px; }
         .line { width: 100%; }

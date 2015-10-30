@@ -1,3 +1,10 @@
+
+//------------------- BATTLESHIP -------------------//
+// Antoine Chiny - 2015
+//
+
+
+//------------------- CONSTANTS -------------------//
 const GRID_SIZE = 10;
 const BOX_SIZE  = 30;
 const Ships = {
@@ -9,6 +16,9 @@ const Ships = {
 }
 const shipColors = ["#6E6E6E", "#B18904", "#298A08", "#61210B", "#8A0829"];
 
+
+
+//------------------- USUALS FUNCTIONS -------------------//
 // Retourne un nombre aléatoire entre min et max
 function randomNumber(min, max) {
     return Math.floor(Math.random()*max+min);
@@ -21,7 +31,7 @@ function newGrid(size)
   var Box = {
     play: 0,
     ship: 0,
-    color: "#8000FF"
+    color: "#2E64FE"
   };
 
   for (j = 0; j < size; j++) {
@@ -44,6 +54,8 @@ function displayGridConsole(grid)
   }
 }
 
+
+//------------------- RANDOM SHIPS POSITION -------------------//
 // Retourne un tableau avec les directions possible pour un bateau
 function getDirections(grid, x, y, shipsize) {
   check_r = 0;
@@ -119,9 +131,10 @@ function putShips (grid) {
   return grid;
 }
 
-// Initialise la grille de box
-function initGridBox(playerGrid, computerGrid)
-{
+
+//------------------- EVENTS FUNCTIONS -------------------//
+// Place les attributs sur les box en fonction de l'index
+function initAttrBox() {
   $('.box').each(function(index){
     if (index < 100) {
       $(this).attr('data-i', index);
@@ -130,16 +143,14 @@ function initGridBox(playerGrid, computerGrid)
       $(this).attr('data-i', index-100);
       $(this).attr('grid-n', 2)
     }
-  })
+  })  
+}
 
-  .bind('mouseenter', function() {
-    $(this).css({opacity: 1});
-  })
-
-  .bind('mouseleave', function() {
-    $(this).css('border-color', '#000000');
-  })
-
+// Initialise la grille de box
+function clickGrid(playerGrid, computerGrid)
+{
+  initAttrBox();
+  $('.box')
   .bind('click', function(click) {
     x = $(this).attr('data-i') % 10;
     y = parseInt($(this).attr('data-i')/10);
@@ -151,13 +162,8 @@ function initGridBox(playerGrid, computerGrid)
   });
 }
 
-function getBox(x,y) {
-  $('.box').each(function(index, box) {
-    if (x == (index % 10) && y == parseInt(index/10)) {
-      return box;
-    }});
-}
-
+//------------------- PLAYER SHIP POSITION -------------------//
+// Fonction qui dessine la croix des possibilités de placement pour un bateau de taille 'size'
 function possibleShipPosition(css, grid, size) {
   x = css.attr('data-i')%10;
   y = parseInt(css.attr('data-i')/10);
@@ -165,7 +171,6 @@ function possibleShipPosition(css, grid, size) {
   $.each(possibleDir, function(index, key) {
     for (i = 0; i < size; i++) {
       if (key === "left") {
-      // getBox(x+i, y).css('background-color', '#FF0040');
         $('.box').each(function(index, box) {
           if (x == (index % 10)+i && y == parseInt(index/10)) {
             $(this).css('background-color', '#FF0040');
@@ -190,60 +195,55 @@ function possibleShipPosition(css, grid, size) {
           }
         });
       }
-   }
+    }
   });
 }
+// Verifie et renvoie la direction si la deuxieme case selectionner est correct
+function getDirSelected(lastY, lastX, clickY, clickX, size) {
 
-function clearGrid(grid) {
-  $('.box').each(function(index) {
-    $(this).css('background-color', '#8000FF');
-  });
+  console.log(clickY, clickX);
+  if (lastX == clickX && lastY-size+1 == clickY) {
+    return 'up';
+  } else if (lastX == clickX && lastY+size-1==clickY) {
+    return 'down';
+  } else if (lastX+size-1==clickX && lastY == clickY) {
+    return 'right';
+  } else if (lastX-size+1==clickX && lastY == clickY) {
+    return 'left';
+  } else {
+    return false
+  }
 }
-
-function getDirSelected(lastY, lastX, clickY, clickX) {
-
-}
-
+// Gestion de l'évenement de positionement d'un bateau
 function getShipSelection(grid) {
   boatPlace = 0;
   lastX = [];
   lastY = [];
 
-  if (boatPlace == 0)
+  initAttrBox();
+ if (boatPlace == 0)
   {
-    $('.display')
-    .css('left', $(document).width()/3)
-    .css('bottom', '0%')
-    .animate({
-      bottom: '30%'
-    }, 'slow', 'linear');
     $('.box')
-    .bind('mouseenter', function() {
-      $(this).css({opacity: 1});
-    })
-    .bind('mouseleave', function() {
-      $(this).css({opacity: 0.3});
-    })
     .bind('click', function() {
       x = $(this).attr('data-i') % 10;
       y = parseInt($(this).attr('data-i')/10);
       lastX.push(x);
       lastY.push(y);
       if (lastY.length > 1 && lastX.length > 1) {
-        getDirSelected(lastY[lastY.length-2], lastX[lastX.length-2], y, x);
+        console.log(getDirSelected(lastY[lastY.length-2], lastX[lastX.length-2], y, x, 5));
       }
       clearGrid(grid);
       possibleShipPosition($(this), grid, 5);
     });
   }
-  $('.box').each(function(index){
-    if (index < 100) {
-      $(this).attr('data-i', index);
-      $(this).attr('grid-n', 1);
-    } else {
-      $(this).attr('data-i', index-100);
-      $(this).attr('grid-n', 2);
-    }
+ }
+
+
+//------------------- DISPLAY FUNCTIONS -------------------//
+// Reaffiche une grille clean
+function clearGrid(grid) {
+  $('.box').each(function(index) {
+    $(this).css('background-color', '#2E64FE');
   });
 }
 
@@ -256,17 +256,20 @@ function displayShips(grid) {
   });
 }
 
+
+//------------------- MAIN FUNCTION -------------------//
+
 function mainGame()
 {
   var boatIsPlace = false;
+  var computerGrid = newGrid(GRID_SIZE);
 
-  if (boatIsPlace) {
+  if (!boatIsPlace) {
     playerGrid = newGrid(GRID_SIZE);
-    initGridBox(playerGrid, computerGrid);
-    playerGrid = putShips(playerGrid);
-    displayShips(playerGrid);
+    clickGrid(playerGrid, computerGrid);
+    computerGrid = putShips(computerGrid);
+    displayShips(computerGrid);
   } else {
-    computerGrid = newGrid(GRID_SIZE);
     boatIsPlace = getShipSelection(computerGrid);
   }
 }
