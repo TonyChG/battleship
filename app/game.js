@@ -15,6 +15,7 @@ const Ships = {
   "Torpilleur": 2
 }
 const ShipColor = ["#6E6E6E", "#B18904", "#298A08", "#61210B", "#8A0829"];
+const ShipSize = [5,4,3,3,2];
 
 var Square = {
   play: false,
@@ -46,13 +47,37 @@ function createGrid(size, n) {
   return grid;
 }
 
-function getPlayerShipsPos(playerGrid) {
+function displaySelection(x, y, grid, size) {
+  x = parseInt(x);
+  y = parseInt(y);
+  console.log(x,y);
+
+  if (!grid[y][x].ship) {
+    if ((x + size)-1 < gridSize) {
+      for (i = 0; i < size; i++)
+        modifyBoxColor(x+i, y, grid, '#F4FA58');
+    }
+    if ((x - size)+1 >= 0) {
+      for (i= 0; i < size; i++)
+        modifyBoxColor(x-i, y, grid, '#F4FA58');
+    }
+    if ((y + size)-1 < gridSize) {
+      for (i= 0; i < size; i++)
+        modifyBoxColor(x, y+i, grid, '#F4FA58');
+    }
+    if ((y - size)+1 >= 0) {
+      for (i= 0; i < size; i++)
+        modifyBoxColor(x, y-i, grid, '#F4FA58');
+    }
+  }
+}
+
+function getPlayerShipsPos(grid) {
   nShip = 0;
 
   $('.box').bind('click', function(click){
-    console.log($(this).attr('data-x'), $(this).attr('data-y'));
-    modifyBoxColor($(this).attr('data-x'), $(this).attr('data-y'), playerGrid, '#F4FA58');
-
+    clearGrid(grid)
+    displaySelection($(this).attr('data-x'), $(this).attr('data-y'), grid, ShipSize[nShip]);
   })
 }
 
@@ -74,6 +99,16 @@ function initAttrBox() {
 function modifyBoxColor(x, y, grid, color) {
   grid[y][x].box.css('background-color', color);
   grid[y][x].box.addClass('clicked');
+}
+
+function clearGrid(grid) {
+  for (y = 0; y < gridSize; y++) {
+    for (x = 0; x < gridSize; x++) {
+      if (!grid[y][x].ship) {
+        grid[y][x].box.css('background-color', '#64C7CC');
+      }
+    }
+  }
 }
 
 //
