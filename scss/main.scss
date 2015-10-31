@@ -3,6 +3,8 @@
 
 $grid_background: #848484;
 $grid_foreground: #2E64FE;
+$box_color: #64C7CC;
+$clicked_color: #F4FA58;
 
 *{
 	@include box-sizing(border);
@@ -34,13 +36,31 @@ body {
         @include orb(28px, initial, lighter);
     }
     .box {
-        padding: 10px;
-        width: 20px; height: 20px;
-        border: 1px solid black;
-        margin-bottom: 2px;
-        background-color: #0040FF;
-        display: inline-block;
-        //@include opacity(.3);
+		position: relative;
+		display: inline-flex;
+		width: 20px;  height: 11.55px;
+		background-color: $box_color;
+		margin: 5.77px 3px; cursor: pointer;
+
+		&.clicked {
+			&:before { border-bottom: 5.77px solid $clicked_color; }
+			&:after { border-top: 5.77px solid $clicked_color; }
+		}
+
+		&:before, &:after {
+			content: ""; width: 0;
+			position: absolute;
+			border-left: 10px solid transparent;
+			border-right: 10px solid transparent;
+		}
+		&:before {
+			bottom: 100%;
+  			border-bottom: 5.77px solid $box_color;
+		}
+		&:after {
+			top: 100%; width: 0;
+			border-top: 5.77px solid $box_color;
+		}
     }
     .grid {
         height: 350px;
@@ -48,7 +68,10 @@ body {
     .grid1, .grid2 {
         padding: 25px 0;
     }
-    .line { width: 100%; }
+    .line {
+		width: 100%;
+		padding: 2px 0;
+	}
 }
 
 footer {

@@ -30,7 +30,7 @@ function randomNumber(min, max) {
 
 function createGrid(size, n) {
   var grid = [];
-  
+
   for (i = 0; i < size; i++)
     grid[i] = [];
   $('.box').each(function(index) {
@@ -40,7 +40,7 @@ function createGrid(size, n) {
     }
     if (n == 2 && index > 99) {
       grid[parseInt((index-100)/gridSize)][(index-100)%gridSize] = Object.create(Square);
-      grid[parseInt((index-100)/gridSize)][(index-100)%gridSize].box = $(this);      
+      grid[parseInt((index-100)/gridSize)][(index-100)%gridSize].box = $(this);
     }
   });
   return grid;
@@ -52,6 +52,7 @@ function getPlayerShipsPos(playerGrid) {
   $('.box').bind('click', function(click){
     console.log($(this).attr('data-x'), $(this).attr('data-y'));
     modifyBoxColor($(this).attr('data-x'), $(this).attr('data-y'), playerGrid, '#F4FA58');
+
   })
 }
 
@@ -72,6 +73,7 @@ function initAttrBox() {
 
 function modifyBoxColor(x, y, grid, color) {
   grid[y][x].box.css('background-color', color);
+  grid[y][x].box.addClass('clicked');
 }
 
 //
