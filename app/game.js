@@ -48,10 +48,6 @@ function createGrid(size, n) {
 }
 
 function displaySelection(x, y, grid, size) {
-  x = parseInt(x);
-  y = parseInt(y);
-  console.log(x,y);
-
   if (!grid[y][x].ship) {
     if ((x + size)-1 < gridSize) {
       for (i = 0; i < size; i++)
@@ -72,13 +68,35 @@ function displaySelection(x, y, grid, size) {
   }
 }
 
+function putOneShip(lastX, lastY, x, y, grid, size) {
+  console.log(lastX, parseInt(x));
+  if (x == lastX) {
+    if (lastX < x && Math.abs(lastX-x)==size) {
+      console.log('Ship');
+    }
+  }
+  else if (y == lastY) {
+
+  }
+}
+
 function getPlayerShipsPos(grid) {
   nShip = 0;
+  lastX = [];
+  lastY = [];
 
   $('.box').bind('click', function(click){
+    x = parseInt($(this).attr('data-x'));
+    y = parseInt($(this).attr('data-y'));
+    lastX.push(x);
+    lastY.push(y);
     clearGrid(grid)
-    displaySelection($(this).attr('data-x'), $(this).attr('data-y'), grid, ShipSize[nShip]);
-  })
+    displaySelection(parseInt($(this).attr('data-x')), parseInt($(this).attr('data-y')), grid, ShipSize[nShip]);
+    if (lastX.length > 1 && lastY.length > 1) {
+      console.log('Test');
+      putOneShip(lastX[lastX.length-2], lastY[lastY.length-2], x, y, grid, ShipSize[nShip]);
+    }
+  });
 }
 
 function initAttrBox() {
@@ -92,7 +110,7 @@ function initAttrBox() {
       $(this).attr('data-x', (index-100)%gridSize);
       $(this).attr('data-y', parseInt((index-100)/gridSize));
       $(this).attr('grid-n', 2);
-    }
+  }
   });
 }
 
@@ -124,7 +142,7 @@ function mainGame()
     shipPosition = getPlayerShipsPos(IAgrid);
   }
   else {
-    console.log('Les bateaux sont placer');
+    console.log('Les bateaux sont placer, la partie commence !');
   }
 }
 
