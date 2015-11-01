@@ -13,7 +13,7 @@ const Ships = {
   "Contre-torpilleurs": 3,
   "Sous-marin": 3,
   "Torpilleur": 2
-}
+};
 const ShipColor = ["#6E6E6E", "#B18904", "#298A08", "#61210B", "#8A0829"];
 const ShipSize = [5,4,3,3,2];
 
@@ -133,7 +133,7 @@ function clearGrid(grid) {
 //--------------------- MAIN FUNCTION --------------------//
 function mainGame()
 {
-  initAttrBox()
+  initAttrBox();
   IAgrid = createGrid(gridSize, 1);
   playerGrid = createGrid(gridSize, 2);
   shipPosition = false;

@@ -20,8 +20,6 @@ var conf = require('./config.json');
 // [Task] Concat .js files
 gulp.task('js', function(){
     return gulp.src(conf.path.js)
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'))
         .pipe(uglify())
         .pipe(concat('bundle.js'))
         .pipe(gulp.dest(conf.path.build_js));

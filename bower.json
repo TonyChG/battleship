@@ -1,0 +1,22 @@
+{
+  "name": "battleship",
+  "version": "0.0.0",
+  "homepage": "https://github.com/TonyChG/battleship",
+  "authors": [
+    "LUC TERRACHER <lucterracher@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "slick-carousel": "~1.5.8"
+  }
+}

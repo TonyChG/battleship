@@ -1,8 +1,8 @@
 {
     "startfile": "index.html",
     "path": {
-        "js": ["./app/jquery.js", "./app/game.js"],
-        "sass": "scss/*.scss",
+        "js": ["./app/jquery.js", "./app/utils.js", "./app/game.js"],
+        "sass": ["scss/*.scss"],
         "css": ".",
         "sourcemap": ".",
         "build_js": "."

@@ -4,7 +4,7 @@
 $grid_background: #848484;
 $grid_foreground: #2E64FE;
 $box_color: #64C7CC;
-$clicked_color: #F4FA58;
+$clicked_color: violet;
 
 *{
 	@include box-sizing(border);
@@ -27,10 +27,23 @@ body {
 .container {
     text-align: center; padding-top: 36px;
     background-color: $grid_background;
-    .character {
-        @include orb(28px, initial, lighter);
-        padding: 20px 0;
-    }
+	display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+	flex-direction: row;
+    justify-content: center;
+	.row { width: auto; }
+	.wrap_grid1, .wrap_grid2 {
+		float: left; 	margin: 0 75px;
+		.character {
+	        @include orb(28px, initial, lighter);
+	        padding: 20px 0;
+	    }
+	}
+	.clearfix { clear: both; }
     .display {
         padding: 12px; margin: 24px 0;
         @include orb(28px, initial, lighter);
@@ -43,6 +56,7 @@ body {
 		margin: 5.77px 3px; cursor: pointer;
 
 		&.clicked {
+			background-color: $clicked_color!important;
 			&:before { border-bottom: 5.77px solid $clicked_color; }
 			&:after { border-top: 5.77px solid $clicked_color; }
 		}
@@ -74,33 +88,29 @@ body {
 	}
 }
 
+#boatSelector {
+	position: absolute; left: 50px; bottom: 0;
+	& > div {
+		width: 100px; height: 100px;
+		line-height: 100px; text-align: center;
+		background-color: #1C95D4;
+	}
+}
+
+.slick-slide { width: 100px; }
+
+.slick-current.slick-active {
+	background-color: yellow;
+}
+
+.slick--next {
+	content: '→';
+	display: block;
+}
+
 footer {
     text-align: center; padding: 32px 0 21px;
     @include orb(21px, uppercase, 400);
-}
-
-//DEBUG
-div#info {
-    position: fixed;
-    padding: 24px;
-    top: 20%; left: 2%;
-    background-color: #DC9C37;
-    border: 2px solid #403D38;
-
-    &>div {
-        text-align: center;
-        padding: 12px 0;
-        font-weight: 500;
-        &:first-child {
-            @include orb(14px, uppercase, 600);
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        &:not(:first-child) {
-            color: white;
-            text-indent: 12px;
-        }
-    }
 }
 
 //keyframes
