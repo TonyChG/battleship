@@ -7,15 +7,13 @@
 //------------------- CONSTANTS -------------------//
 const gridSize = 10;
 const caseSize  = 30;
-const Ships = {
-  "Porte-avion": 5,
-  "Croiseur": 4,
-  "Contre-torpilleurs": 3,
-  "Sous-marin": 3,
-  "Torpilleur": 2
-};
-const ShipColor = ["#6E6E6E", "#B18904", "#298A08", "#61210B", "#8A0829"];
-const ShipSize = [5,4,3,3,2];
+const SHIPS = [
+  {"name":"Porte-Avion", "size":5, "color":"#6E6E6E"},
+  {"name":"Croiseur", "size":4, "color":"#B18904"},
+  {"name":"Contre-torpilleurs", "size":3, "color":"#298A08"},
+  {"name":"Sous-marin", "size":3, "color":"#61210B"},
+  {"name":"Torpilleur", "size":2, "color":"#8A0829"}
+];
 
 var Square = {
   play: false,
@@ -69,33 +67,15 @@ function displaySelection(x, y, grid, size) {
 }
 
 function putOneShip(lastX, lastY, x, y, grid, size) {
-  console.log(lastX, parseInt(x));
-  if (x == lastX) {
-    if (lastX < x && Math.abs(lastX-x)==size) {
-      console.log('Ship');
-    }
-  }
-  else if (y == lastY) {
-
-  }
 }
 
 function getPlayerShipsPos(grid) {
   nShip = 0;
-  lastX = [];
-  lastY = [];
 
   $('.box').bind('click', function(click){
     x = parseInt($(this).attr('data-x'));
     y = parseInt($(this).attr('data-y'));
-    lastX.push(x);
-    lastY.push(y);
     clearGrid(grid)
-    displaySelection(parseInt($(this).attr('data-x')), parseInt($(this).attr('data-y')), grid, ShipSize[nShip]);
-    if (lastX.length > 1 && lastY.length > 1) {
-      console.log('Test');
-      putOneShip(lastX[lastX.length-2], lastY[lastY.length-2], x, y, grid, ShipSize[nShip]);
-    }
   });
 }
 
