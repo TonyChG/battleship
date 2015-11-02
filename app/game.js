@@ -8,6 +8,7 @@
 const gridSize  = 10;
 const caseSize  = 30;
 
+// Ships constants
 const shipConst = [
   {"name":"Porte-Avion", "size":5, "color":"#6E6E6E"},
   {"name":"Croiseur", "size":4, "color":"#B18904"},
@@ -16,6 +17,7 @@ const shipConst = [
   {"name":"Torpilleur", "size":2, "color":"#8A0829"}
 ];
 
+// Box class
 var Box = {
   play: false,
   ship: 0,
@@ -40,6 +42,7 @@ function randomNumber(min, max) {
     return Math.floor(Math.random()*max+min);
 }
 
+// Initialize grid attributs
 function initAttributGrid() {
   $('.grid1, .grid2').each(function(n){
     $('.grid'+String(n+1)+' .box').each(function(index) {
@@ -50,6 +53,7 @@ function initAttributGrid() {
   });
 }
 
+// Create a new grid
 function newGrid(nGrid) {
   var grid = [];
 
@@ -60,13 +64,34 @@ function newGrid(nGrid) {
   return grid;
 }
 
+// Put one ship in grid
+function putOneShip(grid, x1, y1, x2, y2, shipId) {
+  if (x1+shipConst[shipId].size === x2 && y1 === y2) {
+
+  }
+  else if (x1-shipConst[shipId].size === x2 && y1 === y2) {
+
+  }
+  else if (y1+shipConst[shipId].size === y2 && x1 === x2) {
+
+  }
+  else if (y1-shipConst[shipId].size === y2 && x1 === x2) {
+
+  }
+  else {
+    return false;
+  }
+  return true;
+}
+
 //
 //--------------------- MAIN FUNCTION --------------------//
 function mainGame()
 {
-  initAttributGrid()
-  playerGrid = newGrid(1);
+  playerGrid    = newGrid(1);
+  computerGrid  = newGrid(2);
 
+  initAttributGrid()
   playerGrid[4+5*gridSize].color('clicked');
   playerGrid[4+4*gridSize].color('clicked');
   playerGrid[4+3*gridSize].color('clicked');
