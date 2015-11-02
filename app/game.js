@@ -5,9 +5,10 @@
 
 
 //------------------- CONSTANTS -------------------//
-const gridSize = 10;
+const gridSize  = 10;
 const caseSize  = 30;
-const SHIPS = [
+
+const shipConst = [
   {"name":"Porte-Avion", "size":5, "color":"#6E6E6E"},
   {"name":"Croiseur", "size":4, "color":"#B18904"},
   {"name":"Contre-torpilleurs", "size":3, "color":"#298A08"},
@@ -15,11 +16,23 @@ const SHIPS = [
   {"name":"Torpilleur", "size":2, "color":"#8A0829"}
 ];
 
-var Square = {
+var Box = {
   play: false,
   ship: 0,
-  box: {}
-}
+  box: {},
+
+  color: function(cssClass){
+    this.box.addClass(String(cssClass));
+  },
+  played: function(cssClass){
+    this.play = true;
+    this.box.addClass(String(cssClass));
+  },
+  addShip: function(size, cssClass){
+    this.ship = size;
+    this.box.addClass(String(cssClass));
+  }
+};
 
 //------------------- USUALS FUNCTIONS -------------------//
 // Retourne un nombre aléatoire entre min et max
@@ -27,103 +40,36 @@ function randomNumber(min, max) {
     return Math.floor(Math.random()*max+min);
 }
 
-function createGrid(size, n) {
-  var grid = [];
-
-  for (i = 0; i < size; i++)
-    grid[i] = [];
-  $('.box').each(function(index) {
-    if (n == 1 && index < 100) {
-      grid[parseInt(index/gridSize)][index%gridSize] = Object.create(Square);
-      grid[parseInt(index/gridSize)][index%gridSize].box = $(this);
-    }
-    if (n == 2 && index > 99) {
-      grid[parseInt((index-100)/gridSize)][(index-100)%gridSize] = Object.create(Square);
-      grid[parseInt((index-100)/gridSize)][(index-100)%gridSize].box = $(this);
-    }
-  });
-  return grid;
-}
-
-function displaySelection(x, y, grid, size) {
-  if (!grid[y][x].ship) {
-    if ((x + size)-1 < gridSize) {
-      for (i = 0; i < size; i++)
-        modifyBoxColor(x+i, y, grid, '#F4FA58');
-    }
-    if ((x - size)+1 >= 0) {
-      for (i= 0; i < size; i++)
-        modifyBoxColor(x-i, y, grid, '#F4FA58');
-    }
-    if ((y + size)-1 < gridSize) {
-      for (i= 0; i < size; i++)
-        modifyBoxColor(x, y+i, grid, '#F4FA58');
-    }
-    if ((y - size)+1 >= 0) {
-      for (i= 0; i < size; i++)
-        modifyBoxColor(x, y-i, grid, '#F4FA58');
-    }
-  }
-}
-
-function putOneShip(lastX, lastY, x, y, grid, size) {
-}
-
-function getPlayerShipsPos(grid) {
-  nShip = 0;
-
-  $('.box').bind('click', function(click){
-    x = parseInt($(this).attr('data-x'));
-    y = parseInt($(this).attr('data-y'));
-    clearGrid(grid)
-  });
-}
-
-function initAttrBox() {
-  $('.box').each(function(index) {
-    if (index < 100) {
+function initAttributGrid() {
+  $('.grid1, .grid2').each(function(n){
+    $('.grid'+String(n+1)+' .box').each(function(index) {
       $(this).attr('data-x', index%gridSize);
       $(this).attr('data-y', parseInt(index/gridSize));
-      $(this).attr('grid-n', 1);
-    }
-    else {
-      $(this).attr('data-x', (index-100)%gridSize);
-      $(this).attr('data-y', parseInt((index-100)/gridSize));
-      $(this).attr('grid-n', 2);
-  }
+      $(this).attr('grid-n', n+1);
+    });
   });
 }
 
-function modifyBoxColor(x, y, grid, color) {
-  grid[y][x].box.css('background-color', color);
-  grid[y][x].box.addClass('clicked');
-}
+function newGrid(nGrid) {
+  var grid = [];
 
-function clearGrid(grid) {
-  for (y = 0; y < gridSize; y++) {
-    for (x = 0; x < gridSize; x++) {
-      if (!grid[y][x].ship) {
-        grid[y][x].box.css('background-color', '#64C7CC');
-      }
-    }
-  }
+  $('.grid'+String(nGrid)+' .box').each(function(index){
+    grid[index] = Object.create(Box);
+    grid[index].box = $(this);
+  });
+  return grid;
 }
 
 //
 //--------------------- MAIN FUNCTION --------------------//
 function mainGame()
 {
-  initAttrBox();
-  IAgrid = createGrid(gridSize, 1);
-  playerGrid = createGrid(gridSize, 2);
-  shipPosition = false;
+  initAttributGrid()
+  playerGrid = newGrid(1);
 
-  if (!shipPosition) {
-    shipPosition = getPlayerShipsPos(IAgrid);
-  }
-  else {
-    console.log('Les bateaux sont placer, la partie commence !');
-  }
+  playerGrid[4+5*gridSize].color('clicked');
+  playerGrid[4+4*gridSize].color('clicked');
+  playerGrid[4+3*gridSize].color('clicked');
 }
 
 $(document).ready(function(){
