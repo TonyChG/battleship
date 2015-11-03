@@ -1,50 +1,63 @@
+///////////////////
+// -BATTLESHIP-- //
+// Antoine Chiny //
+// Luc Terracher //
+//   - 2015 -    //
+///////////////////
 
-//------------------- BATTLESHIP -------------------//
-// Antoine Chiny - 2015
-//
-
-
-//------------------- CONSTANTS -------------------//
+// - Taille d'une grille
 const gridSize  = 10;
-const caseSize  = 30;
 
-// Ships constants
+// - Ships constants
 const shipConst = [
-  {"name":"Porte-Avion", "size":5, "color":"#6E6E6E"},
-  {"name":"Croiseur", "size":4, "color":"#B18904"},
-  {"name":"Contre-torpilleurs", "size":3, "color":"#298A08"},
-  {"name":"Sous-marin", "size":3, "color":"#61210B"},
-  {"name":"Torpilleur", "size":2, "color":"#8A0829"}
+  {"name":"aircraft-carrier", "size":5, "color":"#6E6E6E"},
+  {"name":"battlecruiser", "size":4, "color":"#B18904"},
+  {"name":"destroyer", "size":3, "color":"#298A08"},
+  {"name":"submarine", "size":3, "color":"#61210B"},
+  {"name":"torpedo", "size":2, "color":"#8A0829"}
 ];
 
-// Box class
+// - Tableau avec les coefficients des differentes directions 
+// - i=0 -> TOP
+// - i=1 -> RIGHT
+// - i=2 -> BOTTOM
+// - i=3 -> LEFT
+const coefTab = [{"x":0,"y":-1},{"x":1,"y":0},{"x":0,"y":1},{"x":-1,"y":0}];
+
+// - Box object
 function Box(jquerySelector) {
+  this.box    = jquerySelector;
   this.isPlay = false;
-  this.ship = 0;
-  this.box = jquerySelector;
+  this.ship   = 0;
+  this.className = 'default';
 }
 
+// - Modifie la couleur d'une case
 Box.prototype.color = function(className) {
-  this.box.addClass(String(className));
+  this.box.removeClass(String(this.className)).addClass(String(className));
+  this.className = className;
 };
 
+// - Lorsque une case est joue
 Box.prototype.play = function(className) {
   this.isPlay = true;
-  this.box.addClass(String(className));
+  this.box.removeClass(String(this.className)).addClass(String(className));
+  this.className = className;
 };
 
+// - Ajoute un bateau de taille 'size'
 Box.prototype.addShip = function(size, className){
   this.ship = size;
-  this.box.addClass(String(className));
+  this.box.removeClass(String(this.className)).addClass(String(className));
+  this.className = className;
 };
 
-//------------------- USUALS FUNCTIONS -------------------//
-// Retourne un nombre aléatoire entre min et max
+// - Retourne un nombre aléatoire entre min et max
 function randomNumber(min, max) {
   return Math.floor(Math.random()*max+min);
 }
 
-// Initialize grid attributs
+// - Initialize grid attributs
 function initAttributGrid() {
   $('.grid1, .grid2').each(function(n){
     $('.grid'+String(n+1)+' .box').each(function(index) {
@@ -55,7 +68,7 @@ function initAttributGrid() {
   });
 }
 
-// Create a new grid
+// - Create a new grid
 function newGrid(nGrid) {
   var grid = [];
 
@@ -65,39 +78,80 @@ function newGrid(nGrid) {
   return grid;
 }
 
-// Put one ship in grid
-function putOneShip(grid, x1, y1, x2, y2, shipId) {
-  if (x1+shipConst[shipId].size === x2 && y1 === y2) {
+// - Put one ship in grid
+function putOneShip(grid, x, y, dir, shipID) {
+  var size = shipConst[shipID].size;
 
+  for (i = 0; i < size; i++) {
+    coefX = i*coefTab[dir].x;
+    coefY = i*coefTab[dir].y;
+    grid[(x+coefX)+(y+coefY)*gridSize].addShip(shipConst[shipID].ship, shipConst[shipID].name);
   }
-  else if (x1-shipConst[shipId].size === x2 && y1 === y2) {
-
-  }
-  else if (y1+shipConst[shipId].size === y2 && x1 === x2) {
-
-  }
-  else if (y1-shipConst[shipId].size === y2 && x1 === x2) {
-
-  }
-  else {
-    return false;
-  }
-  return true;
 }
 
-//
-//--------------------- MAIN FUNCTION --------------------//
+// - Retourne un tableau avec les directions possibles
+function getPossibleDir(x, y, grid, shipID) {
+  var possibleDir = [true, true, true, true];
+  var shipSize    = shipConst[shipID].size;
+
+  coefTab.forEach(function(value, index){
+    for (i = 0; i < shipSize; i++) {
+      coefX = i*value.x;
+      coefY = i*value.y;
+      if (x+coefX < 0 || y+coefY < 0 || x+coefX > 9 || y+coefY > 9)
+        possibleDir[index] = false;
+    }
+  });
+  return possibleDir;
+}
+
+// - Clear une grille
+function clearGrid(grid) {
+  gridID = grid[0].box.attr('grid-n');
+  $('.grid'+gridID+' .box').each(function(index){
+    if (!grid[index].ship) {
+      grid[index].color('default');
+    }
+  });
+}
+
+// - Gestion du click sur la grille du joueur
+function clickOnPlayerGrid(grid) {
+  var shipID      = 0;
+
+  $('.grid2 .box').click(function() {
+    x = parseInt($(this).attr('data-x'));
+    y = parseInt($(this).attr('data-y'));
+    var possibleDir = getPossibleDir(x, y, grid, shipID);
+    clearGrid(grid);
+    possibleDir.forEach(function(value, index){
+      if (value) {
+        for (i = 0; i < shipConst[shipID].size; i++) {
+          coefX = i*coefTab[index].x;
+          coefY = i*coefTab[index].y;
+          grid[(x+coefX)+(y+coefY)*gridSize].color('clicked');
+        }
+      }
+    });
+  });
+}
+
+// - Main function
 function mainGame()
 {
-  playerGrid  = newGrid(1);
-  computGrid  = newGrid(2);
+  playerGrid  = newGrid(2);
+  computGrid  = newGrid(1);
 
   initAttributGrid();
-  playerGrid[3+4*gridSize].addShip(5, 'clicked');
-  playerGrid[0].play('clicked');
-  console.log(playerGrid[0].isPlay);
+  clickOnPlayerGrid(playerGrid);
+  putOneShip(computGrid, 0, 0, 1, 0);
+  putOneShip(computGrid, 3, 3, 2, 1);
+  putOneShip(computGrid, 8, 0, 2, 2);
+  putOneShip(computGrid, 0, 9, 1, 3);
+  putOneShip(computGrid, 9, 9, 0, 4);
 }
 
+// - Clone la premiere grille du DOM
 $(document).ready(function(){
     $('.grid1>div').clone().appendTo('.grid2');
     mainGame();

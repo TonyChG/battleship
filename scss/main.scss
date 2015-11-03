@@ -3,8 +3,14 @@
 
 $grid_background: #848484;
 $grid_foreground: #2E64FE;
-$box_color: #64C7CC;
-$clicked_color: violet;
+$box_color: #4B719B;
+$clicked_color: #4EA2E7;
+
+$aircraft_color: #FFFFFF;
+$battlecruiser_color: #B18904;
+$destroyer_color: #298A08;
+$submarine_color: #61210B;
+$torpedo_color: #8A0829;
 
 *{
 	@include box-sizing(border);
@@ -27,7 +33,7 @@ body {
 .container {
     text-align: center; padding-top: 36px;
     background-color: $grid_background;
-	display: -webkit-box;
+	  display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-flex;
@@ -55,11 +61,47 @@ body {
 		background-color: $box_color;
 		margin: 5.77px 3px; cursor: pointer;
 
+    &.aircraft-carrier {
+      background-color: $aircraft_color!important;
+      &:before { border-bottom: 5.77px solid $aircraft_color; }
+      &:after { border-top: 5.77px solid $aircraft_color; }
+    }
+
+    &.battlecruiser {
+      background-color: $battlecruiser_color!important;
+      &:before { border-bottom: 5.77px solid $battlecruiser_color; }
+      &:after { border-top: 5.77px solid $battlecruiser_color; }
+    }
+
+    &.destroyer {
+      background-color: $destroyer_color!important;
+      &:before { border-bottom: 5.77px solid $destroyer_color; }
+      &:after { border-top: 5.77px solid $destroyer_color; }      
+    }
+
+    &.submarine {
+      background-color: $submarine_color!important;
+      &:before { border-bottom: 5.77px solid $submarine_color; }
+      &:after { border-top: 5.77px solid $submarine_color; }      
+    }
+
+    &.torpedo {
+      background-color: $torpedo_color!important;
+      &:before { border-bottom: 5.77px solid $torpedo_color; }
+      &:after { border-top: 5.77px solid $torpedo_color; }      
+    }
+
 		&.clicked {
 			background-color: $clicked_color!important;
 			&:before { border-bottom: 5.77px solid $clicked_color; }
 			&:after { border-top: 5.77px solid $clicked_color; }
 		}
+
+    &.default {
+      background-color: $box_color!important;
+      &:before { border-bottom: 5.77px solid $box_color; }
+      &:after { border-top: 5.77px solid $box_color; }      
+    }
 
 		&:before, &:after {
 			content: ""; width: 0;
