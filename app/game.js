@@ -18,28 +18,30 @@ const shipConst = [
 ];
 
 // Box class
-var Box = {
-  play: false,
-  ship: 0,
-  box: {},
+function Box(jquerySelector) {
+  this.isPlay = false;
+  this.ship = 0;
+  this.box = jquerySelector;
+}
 
-  color: function(cssClass){
-    this.box.addClass(String(cssClass));
-  },
-  played: function(cssClass){
-    this.play = true;
-    this.box.addClass(String(cssClass));
-  },
-  addShip: function(size, cssClass){
-    this.ship = size;
-    this.box.addClass(String(cssClass));
-  }
+Box.prototype.color = function(className) {
+  this.box.addClass(String(className));
+};
+
+Box.prototype.play = function(className) {
+  this.isPlay = true;
+  this.box.addClass(String(className));
+};
+
+Box.prototype.addShip = function(size, className){
+  this.ship = size;
+  this.box.addClass(String(className));
 };
 
 //------------------- USUALS FUNCTIONS -------------------//
 // Retourne un nombre aléatoire entre min et max
 function randomNumber(min, max) {
-    return Math.floor(Math.random()*max+min);
+  return Math.floor(Math.random()*max+min);
 }
 
 // Initialize grid attributs
@@ -58,8 +60,7 @@ function newGrid(nGrid) {
   var grid = [];
 
   $('.grid'+String(nGrid)+' .box').each(function(index){
-    grid[index] = Object.create(Box);
-    grid[index].box = $(this);
+    grid[index] = new Box($(this));
   });
   return grid;
 }
@@ -88,13 +89,13 @@ function putOneShip(grid, x1, y1, x2, y2, shipId) {
 //--------------------- MAIN FUNCTION --------------------//
 function mainGame()
 {
-  playerGrid    = newGrid(1);
-  computerGrid  = newGrid(2);
+  playerGrid  = newGrid(1);
+  computGrid  = newGrid(2);
 
-  initAttributGrid()
-  playerGrid[4+5*gridSize].color('clicked');
-  playerGrid[4+4*gridSize].color('clicked');
-  playerGrid[4+3*gridSize].color('clicked');
+  initAttributGrid();
+  playerGrid[3+4*gridSize].addShip(5, 'clicked');
+  playerGrid[0].play('clicked');
+  console.log(playerGrid[0].isPlay);
 }
 
 $(document).ready(function(){
