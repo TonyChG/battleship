@@ -85,6 +85,7 @@ function putOneShip(grid, x, y, dir, shipID) {
   for (i = 0; i < size; i++) {
     coefX = i*coefTab[dir].x;
     coefY = i*coefTab[dir].y;
+    // Put ship on box(x,y)
     grid[(x+coefX)+(y+coefY)*gridSize].addShip(shipConst[shipID].ship, shipConst[shipID].name);
   }
 }
