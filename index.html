@@ -2,8 +2,7 @@
 <html>
 <head>
     <title>BattleShip</title>
-    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css">
-    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick-theme.css">
+    <link rel="stylesheet" href="bower_components/flexslider/flexslider.css">
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
@@ -147,30 +146,29 @@
         <div class="clearfix"></div>
     </div>
 
-    <div id="boatSelector" data-slick='{"slidesToShow": 3, "slidesToScroll": 1}'>
-      <div>
-          <span>Item 1</span>
-      </div>
-      <div>
-          <span>Item 2</span>
-      </div>
-      <div>
-          <span>Item 3</span>
-      </div>
-      <div><h3>4</h3></div>
-      <div><h3>5</h3></div>
-      <div><h3>6</h3></div>
-      <div><h3>7</h3></div>
-      <div><h3>8</h3></div>
-      <div><h3>9</h3></div>
+    <div class="flexslider">
+        <ul class="boats">
+            <li class="boat">
+                <span>1. lorem</span>
+            </li>
+            <li class="boat">
+                <span>2. text</span>
+            </li>
+            <li class="boat">
+                <span>3. example</span>
+            </li>
+        </ul>
     </div>
+    <a id="add" href="javascript:void(0);">Add Boat to slider</a>
 
     <footer>
         Réalisé par <a href="https://github.com/TonyChG" target="_blank">TonyChg</a>
         / <a href="https://github.com/polymorphl" target="_blank">Polymorphl</a>
     </footer>
 
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+
+    <script type="text/javascript" src="bower_components/flexslider/jquery.flexslider-min.js"></script>
     <script type="text/javascript" src="bundle.js"></script>
-    <script type="text/javascript" src="bower_components/slick-carousel/slick/slick.min.js"></script>
 </body>
 </html>

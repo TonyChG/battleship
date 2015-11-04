@@ -1,30 +1,62 @@
-function getNextBoat() {
-    $('#boatSelector').slick('slickNext');
-}
+(function($){
+    $.fn.isolatedScroll = function( options ){
+        defaults = {
+            // only blocks scroll if area is scrollable, set to false to always disable other element scroll
+            autoscroll: true
+        }
+        options = $.extend( defaults, options );
 
-function getPrevBoat() {
-    $('#boatSelector').slick('slickPrev');
-}
+        return this.bind( 'touchmove mousewheel DOMMouseScroll', function ( e ) {
+            if( !options.autoscroll || ($(this).outerHeight() < $(this)[0].scrollHeight) ) {
+                var e0 = e.originalEvent,
+                    delta = e0.wheelDelta || -e0.detail;
 
-$(document).ready(function(){
-    $('#boatSelector').slick({
-        centerMode: true,
-        draggable: true
+                this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+                e.preventDefault();
+            }
+        });
+    };
+}(jQuery));
+
+$(window).load(function() {
+    var timer = null;
+    var wheeling = false;
+    $('.flexslider').isolatedScroll();
+    $('.flexslider').flexslider({
+        animation: "slide",
+        selector: ".boats > .boat",
+        animationLoop: false,
+        mousewheel: false,
+        slideshow: false,
+        slideshowSpeed: 2000,
+        reverse: true,
+        itemWidth: 210,
+        minItems: 1,
+        maxItems: 1,
+        move: 0,
+        itemMargin: 5,
+        start: function(slider) {
+            var timer = null;
+            var wheeling = false;
+            $('.flexslider').on('mousewheel', function(event, delta, deltaX, deltaY){
+                  if(timer){
+                    clearTimeout(timer);
+                  }
+                  if(!wheeling){
+                    var target = delta < 0 ? slider.getTarget('next') : slider.getTarget('prev');
+                    slider.flexAnimate(target, true);
+                  }
+                  wheeling = true;
+                  timer = setTimeout(function(){
+                    wheeling = false;
+                }, 300);
+            });
+        }
     });
-
-
-    var mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
-    $('#boatSelector').bind(mousewheelevt, function(e){
-
-        var evt = window.event || e //equalize event object
-        evt = evt.originalEvent ? evt.originalEvent : evt; //convert to originalEvent if possible
-        var delta = evt.detail ? evt.detail*(-40) : evt.wheelDelta //check for detail first, because it is used by Opera and FF
-
-        if(delta > 30) {
-            getPrevBoat();
-        }
-        else{
-            getNextBoat();
-        }
+    var i = 0;
+    $("#add").click(function(){
+        div = "<li class='boat'><span>"+i+". Number what?</span></li>";
+        $('.flexslider').data('flexslider').addSlide($(div));
+        i++;
     });
 });
