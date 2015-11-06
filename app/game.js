@@ -122,32 +122,46 @@ function clearGrid(grid) {
 
 function getDir(x1, y1, x2, y2, grid, shipID) {
   shipSize = shipConst[shipID].size;
+  dir = -1;
+  check = true;
 
-  coefTab.forEach(function(value, index) {
-    console.log(x1+value.x*shipSize === x2 && y1+value.y*shipSize === y2);
-    // console.log(y1+value.y*shipSize === y2);
-  });
+  if (y1 === y2 && x2+(shipSize-1) === x1)
+    dir = 3;
+  if (y1 === y2 && x1+(shipSize-1) === x2)
+    dir = 1;
+  if (x1 === x2 && y1+(shipSize-1) === y2)
+    dir = 2;
+  if (x1 === x2 && y2+(shipSize-1) === y1)
+    dir = 0;
+  if (dir != -1) for (i = 0; i < shipSize; i++)
+    if (grid[(coefTab[dir].x*i+x1)+(coefTab[dir].y*i+y1)*gridSize].ship)
+      check = false;
+  check ? dir = dir : dir = -1
+  return dir;
 }
 
 // - Gestion du click sur la grille du joueur
 function clickOnPlayerGrid(grid) {
   var 
     shipID = 0,
-    lastX = [],
-    lastY = [];
+    saveX = [],
+    saveY = [];
 
   $('.grid2 .box').click(function() {
     x = parseInt($(this).attr('data-x'));
     y = parseInt($(this).attr('data-y'));
     var possibleDir = getPossibleDir(x, y, grid, shipID);
-    lastX.push(x);
-    lastY.push(y);
+    saveX.push(x);
+    saveY.push(y);
     clearGrid(grid);
-    if (lastX.length > 1 && lastY.length > 1) {
-      // console.log(lastX[lastX.length-2], lastY[lastY.length-2]);
-      console.log(getDir(lastX[lastX.length-2], lastY[lastY.length-2], x, y, grid, shipID));
+    if (saveX.length > 1 && saveY.length > 1) {
+      var firstX = saveX[saveX.length-2];
+      var firstY = saveY[saveY.length-2];
+      if (!grid[firstX+firstY*gridSize].ship && !grid[x+y*gridSize].ship) {
+        dir = getDir(firstX, firstY, x, y, grid, shipID);
+        // Put ship -->
+      }
     }
-    console.log(lastX, lastY);
     possibleDir.forEach(function(value, index){
       if (value) for (i = 0; i < shipConst[shipID].size; i++) {
         (i === shipConst[shipID].size-1) ? className = 'possible' : className = 'clicked'
@@ -169,7 +183,7 @@ function mainGame()
   putOneShip(computGrid, 8, 0, 2, 2);
   putOneShip(computGrid, 0, 9, 1, 3);
   putOneShip(computGrid, 9, 9, 0, 4);
-  putOneShip(playerGrid, 0, 0, 1, 0);
+  putOneShip(playerGrid, 0, 4, 1, 0);
   clickOnPlayerGrid(playerGrid);
 }
 
