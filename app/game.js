@@ -10,11 +10,11 @@ const gridSize  = 10;
 
 // - Ships constants
 const shipConst = [
-  {"name":"aircraft-carrier", "size":5, "color":"#6E6E6E"},
-  {"name":"battlecruiser", "size":4, "color":"#B18904"},
-  {"name":"destroyer", "size":3, "color":"#298A08"},
-  {"name":"submarine", "size":3, "color":"#61210B"},
-  {"name":"torpedo", "size":2, "color":"#8A0829"}
+  {"name":"aircraft-carrier", "size":5, "color":"#6E6E6E", "id":0},
+  {"name":"battlecruiser", "size":4, "color":"#B18904", "id":1},
+  {"name":"destroyer", "size":3, "color":"#298A08", "id":2},
+  {"name":"submarine", "size":3, "color":"#61210B", "id":3},
+  {"name":"torpedo", "size":2, "color":"#8A0829", "id":4}
 ];
 
 // - Tableau avec les coefficients des differentes directions 
@@ -147,35 +147,50 @@ function clickOnPlayerGrid(grid) {
     saveX = [],
     saveY = [];
 
-  $('.grid2 .box').click(function() {
-    x = parseInt($(this).attr('data-x'));
-    y = parseInt($(this).attr('data-y'));
-    var possibleDir = getPossibleDir(x, y, grid, shipID);
-    saveX.push(x);
-    saveY.push(y);
-    clearGrid(grid);
-    if (saveX.length > 1 && saveY.length > 1) {
-      var firstX = saveX[saveX.length-2];
-      var firstY = saveY[saveY.length-2];
-      if (!grid[firstX+firstY*gridSize].ship && !grid[x+y*gridSize].ship) {
-        dir = getDir(firstX, firstY, x, y, grid, shipID);
-        // Put ship -->
+  // Si les bateaux ne sont pas placer les faire placer au joueur
+  if (shipID < shipConst.length) {
+    $('.grid2 .box').click(function() {
+      x = parseInt($(this).attr('data-x'));
+      y = parseInt($(this).attr('data-y'));
+      var 
+        possibleDir = getPossibleDir(x, y, grid, shipID),
+        boatIsPut = false;
+      saveX.push(x);
+      saveY.push(y);
+      if (saveX.length > 1 && saveY.length > 1) { // player click on <1 boxes
+        var firstX = saveX[saveX.length-2];
+        var firstY = saveY[saveY.length-2];
+        // selected box is not a ship
+        if (!grid[firstX+firstY*gridSize].ship && !grid[x+y*gridSize].ship) {
+          // get direction of selected boxes
+          dir = getDir(firstX, firstY, x, y, grid, shipID);
+          if (dir != -1) {
+            // put one ship in grid
+            putOneShip(grid, firstX, firstY, dir, shipID);
+            shipID++;
+            boatIsPut = true;
+          }
+        }
       }
-    }
-    possibleDir.forEach(function(value, index){
-      if (value) for (i = 0; i < shipConst[shipID].size; i++) {
-        (i === shipConst[shipID].size-1) ? className = 'possible' : className = 'clicked'
-        grid[(x+(i*coefTab[index].x))+(y+(i*coefTab[index].y))*gridSize].color(className);
-      }
+      clearGrid(grid);
+      if (!boatIsPut) // Display possible selection
+        possibleDir.forEach(function(value, index){
+          if (value) for (i = 0; i < shipConst[shipID].size; i++) {
+            (i === shipConst[shipID].size-1) ? className = 'possible' : className = 'clicked'
+            grid[(x+(i*coefTab[index].x))+(y+(i*coefTab[index].y))*gridSize].color(className);
+          }
+        });
     });
-  });
+  }
 }
 
 // - Main function
 function mainGame()
 {
-  playerGrid  = newGrid(2);
-  computGrid  = newGrid(1);
+  var
+    shipID = 0,
+    playerGrid  = newGrid(2),
+    computGrid  = newGrid(1);
 
   initAttributGrid();
   putOneShip(computGrid, 0, 0, 1, 0);
@@ -183,7 +198,6 @@ function mainGame()
   putOneShip(computGrid, 8, 0, 2, 2);
   putOneShip(computGrid, 0, 9, 1, 3);
   putOneShip(computGrid, 9, 9, 0, 4);
-  putOneShip(playerGrid, 0, 4, 1, 0);
   clickOnPlayerGrid(playerGrid);
 }
 
