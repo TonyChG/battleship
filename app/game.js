@@ -86,22 +86,26 @@ function putOneShip(grid, x, y, dir, shipID) {
     coefX = i*coefTab[dir].x;
     coefY = i*coefTab[dir].y;
     // Put ship on box(x,y)
-    grid[(x+coefX)+(y+coefY)*gridSize].addShip(shipConst[shipID].ship, shipConst[shipID].name);
+    grid[(x+coefX)+(y+coefY)*gridSize].addShip(shipConst[shipID].size, shipConst[shipID].name);
   }
 }
 
 // - Retourne un tableau avec les directions possibles
 function getPossibleDir(x, y, grid, shipID) {
-  var possibleDir = [true, true, true, true];
-  var shipSize    = shipConst[shipID].size;
+  var 
+    possibleDir = [true, true, true, true],
+    shipSize    = shipConst[shipID].size;
 
   coefTab.forEach(function(value, index){
     for (i = 0; i < shipSize; i++) {
-      coefX = i*value.x;
-      coefY = i*value.y;
-      if (x+coefX < 0 || y+coefY < 0 || x+coefX > 9 || y+coefY > 9)
+      if ((x+(i*value.x) < 0 || y+(i*value.y) < 0 || x+(i*value.x) > 9 || y+(i*value.y) > 9))
         possibleDir[index] = false;
     }
+  });
+  possibleDir.forEach(function(value, index) {
+    if (value) for (i = 0; i < shipSize; i++)
+      if (grid[(x+(i*coefTab[index].x))+(y+(i*coefTab[index].y))*gridSize].ship != 0)
+        possibleDir[index] = false;
   });
   return possibleDir;
 }
@@ -116,22 +120,38 @@ function clearGrid(grid) {
   });
 }
 
+function getDir(x1, y1, x2, y2, grid, shipID) {
+  shipSize = shipConst[shipID].size;
+
+  coefTab.forEach(function(value, index) {
+    console.log(x1+value.x*shipSize === x2 && y1+value.y*shipSize === y2);
+    // console.log(y1+value.y*shipSize === y2);
+  });
+}
+
 // - Gestion du click sur la grille du joueur
 function clickOnPlayerGrid(grid) {
-  var shipID      = 0;
+  var 
+    shipID = 0,
+    lastX = [],
+    lastY = [];
 
   $('.grid2 .box').click(function() {
     x = parseInt($(this).attr('data-x'));
     y = parseInt($(this).attr('data-y'));
     var possibleDir = getPossibleDir(x, y, grid, shipID);
+    lastX.push(x);
+    lastY.push(y);
     clearGrid(grid);
+    if (lastX.length > 1 && lastY.length > 1) {
+      // console.log(lastX[lastX.length-2], lastY[lastY.length-2]);
+      console.log(getDir(lastX[lastX.length-2], lastY[lastY.length-2], x, y, grid, shipID));
+    }
+    console.log(lastX, lastY);
     possibleDir.forEach(function(value, index){
-      if (value) {
-        for (i = 0; i < shipConst[shipID].size; i++) {
-          coefX = i*coefTab[index].x;
-          coefY = i*coefTab[index].y;
-          grid[(x+coefX)+(y+coefY)*gridSize].color('clicked');
-        }
+      if (value) for (i = 0; i < shipConst[shipID].size; i++) {
+        (i === shipConst[shipID].size-1) ? className = 'possible' : className = 'clicked'
+        grid[(x+(i*coefTab[index].x))+(y+(i*coefTab[index].y))*gridSize].color(className);
       }
     });
   });
@@ -144,12 +164,13 @@ function mainGame()
   computGrid  = newGrid(1);
 
   initAttributGrid();
-  clickOnPlayerGrid(playerGrid);
   putOneShip(computGrid, 0, 0, 1, 0);
   putOneShip(computGrid, 3, 3, 2, 1);
   putOneShip(computGrid, 8, 0, 2, 2);
   putOneShip(computGrid, 0, 9, 1, 3);
   putOneShip(computGrid, 9, 9, 0, 4);
+  putOneShip(playerGrid, 0, 0, 1, 0);
+  clickOnPlayerGrid(playerGrid);
 }
 
 // - Clone la premiere grille du DOM

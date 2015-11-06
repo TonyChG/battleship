@@ -5,6 +5,7 @@ $grid_background: #848484;
 $grid_foreground: #2E64FE;
 $box_color: #4B719B;
 $clicked_color: #4EA2E7;
+$possible_color: #FFEE40;
 
 $aircraft_color: #FFFFFF;
 $battlecruiser_color: #B18904;
@@ -36,7 +37,7 @@ body {
     display: -webkit-flex;
     display: flex;
     align-items: center;
-	flex-direction: row;
+    flex-direction: row;
     justify-content: center;
 	.row { width: auto; }
 	.wrap_grid1, .wrap_grid2 {
@@ -93,6 +94,12 @@ body {
 			&:before { border-bottom: 5.77px solid $clicked_color; }
 			&:after { border-top: 5.77px solid $clicked_color; }
 		}
+    
+    &.possible {
+      background-color: $possible_color!important;
+      &:before { border-bottom: 5.77px solid $possible_color; }
+      &:after { border-top: 5.77px solid $possible_color; }      
+    }
 
     &.default {
       background-color: $box_color!important;
