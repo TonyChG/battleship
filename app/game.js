@@ -50,7 +50,7 @@ Box.prototype.addShip = function(size, className){
   this.ship = size;
   this.box.removeClass(String(this.className)).addClass(String(className));
   this.className = className;
-}};
+};
 
 // - Retourne un nombre aléatoire entre min et max
 function randomNumber(min, max) {
