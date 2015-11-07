@@ -24,8 +24,8 @@ gulp.task('js-jshint', function(){
     return gulp.src(['!app/jquery.js', 'app/*.js'])
         .pipe(jshint(conf.path.jshint))
         .pipe(jshint.reporter(stylish))
-        .pipe(uglify())
         .pipe(concat(conf.build_appname))
+        .pipe(uglify())
         .pipe(gulp.dest(conf.path.build_js));
 });
 

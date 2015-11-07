@@ -9,6 +9,12 @@
   }
 }
 
+@mixin display-flex() {
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
 @mixin box-sizing($type) {
 	box-sizing: #{$type}-box;
 	-webkit-box-sizing: #{$type}-box;
