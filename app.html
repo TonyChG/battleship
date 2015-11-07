@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BattleShip</title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body ng-app="battleship">
+    <style>
+        footer {
+            text-align: center;
+        }
+    </style>
+
+    <section class="content"  ng-controller="mainCtrl as mainVm">
+        <div class="container">
+            <div class="row">
+                <div ui-view></div>
+            </div>
+            <div class="row">
+                <a ui-sref="home">Home</a>
+                <a ui-sref="game">Game</a>
+                <a ui-sref="team">Team</a>
+            </div>
+            <button class="button"ng-click="vm.logout()" ng-show="vm.isLoggedIn">
+                <i class="fa fa-sign-out fa-2x"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="row">
+            <div class="col s12">
+                Réalisé par <a href="https://github.com/TonyChG" target="_blank">TonyChg</a>
+                / <a href="https://github.com/polymorphl" target="_blank">Polymorphl</a>
+            </div>
+        </div>
+    </footer>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="bower_components/firebase/firebase.js"></script>
+    <script src="bower_components/angularfire/dist/angularfire.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/Materialize/dist/js/materialize.min.js"></script>
+    <script src="app/app-angular.js"></script>
+    <script src="app/app-controllers.js"></script>
+</body>
+</html>
