@@ -184,6 +184,43 @@ function clickOnPlayerGrid(grid) {
   }
 }
 
+function possibleToPutShip(x, y, grid, shipID) {
+  var
+    check = false,
+    dirTab = getPossibleDir(x, y, grid, shipID);
+
+  for (i = 0; i < dirTab.length; i++)
+    if (!dirTab[i])
+      check = true;
+  return check;
+}
+
+function getSelectDir(dirTab) {
+  var randDir = randomNumber(0, dirTab.length-1);
+
+  while (!dirTab[randDir])
+    randDir = randomNumber(0, dirTab.length-1);
+  return randDir;
+}
+
+function putRandShips(grid) {
+  var
+    maxRandomize = 0;
+    randX = randomNumber(0, gridSize),
+    randY = randomNumber(0, gridSize);
+
+  shipConst.forEach(function(value, index) {
+    while (grid[randX+randY*gridSize].ship 
+      && possibleToPutShip(randX, randY, grid, index)
+      && maxRandomize < 1000) {
+      randX = randomNumber(0, gridSize);
+      randY = randomNumber(0, gridSize);
+    }
+    dirTab = getPossibleDir(randX, randY, grid, index);
+    putOneShip(grid, randX, randY, getSelectDir(dirTab), index);
+  });
+}
+
 // - Main function
 function mainGame()
 {
@@ -193,11 +230,7 @@ function mainGame()
     computGrid  = newGrid(1);
 
   initAttributGrid();
-  putOneShip(computGrid, 0, 0, 1, 0);
-  putOneShip(computGrid, 3, 3, 2, 1);
-  putOneShip(computGrid, 8, 0, 2, 2);
-  putOneShip(computGrid, 0, 9, 1, 3);
-  putOneShip(computGrid, 9, 9, 0, 4);
+  putRandShips(computGrid);
   clickOnPlayerGrid(playerGrid);
 }
 
