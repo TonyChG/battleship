@@ -203,6 +203,7 @@ function getSelectDir(dirTab) {
   return randDir;
 }
 
+// Ajoute de facon aleatoire tout les bateaux dans la grille
 function putRandShips(grid) {
   var
     maxRandomize = 0;
