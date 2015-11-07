@@ -1,0 +1,14 @@
+* {
+	@include box-sizing(border);
+}
+
+body {
+    outline:0;
+    margin: 10px 0;
+    background-color: $grid_background;
+}
+
+footer {
+    text-align: center; padding: 32px 0 21px;
+    @include orb(21px, uppercase, 400);
+}

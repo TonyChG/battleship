@@ -1,31 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Orbitron:400,500,700);
 @import "mixins";
-
-$grid_background: #848484;
-$grid_foreground: #2E64FE;
-$box_color: #4B719B;
-$clicked_color: #4EA2E7;
-$possible_color: #FFEE40;
-
-$aircraft_color: #FFFFFF;
-$battlecruiser_color: #B18904;
-$destroyer_color: #298A08;
-$submarine_color: #61210B;
-$torpedo_color: #8A0829;
-
-*{
-	@include box-sizing(border);
-}
-
-body {
-    outline:0;
-    margin: 10px 0;
-    background-color: $grid_background;
-}
+@import "variables";
+@import "default";
 
 .zone-title {
     text-align: center; padding: 24px 34px 12px;
-
     @include orb(64px, initial, bolder);
 }
 .container {
@@ -59,7 +38,15 @@ body {
 		width: 20px;  height: 11.55px;
 		background-color: $box_color;
 		margin: 5.77px 3px; cursor: pointer;
-		@include transition(background-color .3s ease-in);
+		border-left: 1px solid #ABABAB;
+		border-right: 1px solid #ABABAB;
+		@include transition(background-color .3s cubic-bezier(0.65, 0, 1, 0.37));
+		&:before {
+			@include transition(border-bottom .2s cubic-bezier(0.65, 0, 1, 0.37));
+		}
+		&:after {
+			@include transition(border-top .2s cubic-bezier(0.65, 0, 1, 0.37));
+		}
 
     &.aircraft-carrier {
       background-color: $aircraft_color!important;
@@ -128,7 +115,6 @@ body {
         height: 350px;
     }
     .grid1, .grid2 {
-		visibility: hidden;
         padding: 25px 0;
 		@include transition(all .3, ease);
     }
@@ -152,9 +138,4 @@ body {
 #add {
 	display: block;
 	text-align: center;
-}
-
-footer {
-    text-align: center; padding: 32px 0 21px;
-    @include orb(21px, uppercase, 400);
 }
