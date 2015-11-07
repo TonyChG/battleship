@@ -1,5 +1,7 @@
 (function($){
+    "use script";
     $.fn.isolatedScroll = function( options ){
+        "use script";
         defaults = {
             // only blocks scroll if area is scrollable, set to false to always disable other element scroll
             autoscroll: true

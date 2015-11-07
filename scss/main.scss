@@ -58,6 +58,7 @@ body {
 		width: 20px;  height: 11.55px;
 		background-color: $box_color;
 		margin: 5.77px 3px; cursor: pointer;
+		@include transition(all .4s ease-in);
 
     &.aircraft-carrier {
       background-color: $aircraft_color!important;
@@ -94,11 +95,11 @@ body {
 			&:before { border-bottom: 5.77px solid $clicked_color; }
 			&:after { border-top: 5.77px solid $clicked_color; }
 		}
-    
+
     &.possible {
       background-color: $possible_color!important;
       &:before { border-bottom: 5.77px solid $possible_color; }
-      &:after { border-top: 5.77px solid $possible_color; }      
+      &:after { border-top: 5.77px solid $possible_color; }
     }
 
     &.default {
@@ -126,7 +127,9 @@ body {
         height: 350px;
     }
     .grid1, .grid2 {
+		visibility: hidden;
         padding: 25px 0;
+		@include transition(all .3, ease);
     }
     .line {
 		width: 100%;
@@ -149,7 +152,6 @@ body {
 	display: block;
 	text-align: center;
 }
-
 
 footer {
     text-align: center; padding: 32px 0 21px;

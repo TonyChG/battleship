@@ -1,7 +1,9 @@
 {
     "startfile": "index.html",
+    "enable_js_hint": false,
     "path": {
         "js": ["./app/utils.js", "./app/game.js"],
+        "jshint": ".jshintrc",
         "sass": ["scss/*.scss"],
         "css": ".",
         "sourcemap": ".",
@@ -10,6 +12,7 @@
     "sass_opt": {
         "outputStyle": "compressed"
     },
+    "build_appname": "bundle.js",
     "sass_error": "Error SCSS\nLook in the console for details",
     "dev_url": "."
 }

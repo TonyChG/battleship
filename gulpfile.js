@@ -14,14 +14,26 @@ var plumber = require('gulp-plumber');
 var notify = require('gulp-notify');
 var concat = require('gulp-concat');
 var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 var uglify = require('gulp-uglify');
 var conf = require('./config.json');
+
+
+// [Task] Concat .js files + JSHINT
+gulp.task('js-jshint', function(){
+    return gulp.src(['!app/jquery.js', 'app/*.js'])
+        .pipe(jshint(conf.path.jshint))
+        .pipe(jshint.reporter(stylish))
+        .pipe(uglify())
+        .pipe(concat(conf.build_appname))
+        .pipe(gulp.dest(conf.path.build_js));
+});
 
 // [Task] Concat .js files
 gulp.task('js', function(){
     return gulp.src(conf.path.js)
         .pipe(uglify())
-        .pipe(concat('bundle.js'))
+        .pipe(concat(conf.build_appname))
         .pipe(gulp.dest(conf.path.build_js));
 });
 
@@ -47,7 +59,11 @@ gulp.task('serve', ['sass'], function() {
         }
     });
 
-    gulp.watch(conf.path.js, ['js']);
+    if (conf.enable_js_hint) {
+        gulp.watch(conf.path.js, ['js-jshint']);
+    } else {
+        gulp.watch(conf.path.js, ['js']);
+    }
     gulp.watch(conf.path.sass, ['sass']);
     gulp.watch(conf.startfile).on("change", browserSync.reload);
 });
