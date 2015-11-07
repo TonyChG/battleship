@@ -39,6 +39,7 @@ body {
     align-items: center;
     flex-direction: row;
     justify-content: center;
+    width: 100%; height: 100%;
 	.row { width: auto; }
 	.wrap_grid1, .wrap_grid2 {
 		float: left; 	margin: 0 75px;
@@ -58,6 +59,8 @@ body {
 		width: 20px;  height: 11.55px;
 		background-color: $box_color;
 		margin: 5.77px 3px; cursor: pointer;
+    @include opacity(.7);
+    @include transition(all .3s ease);
 
     &.aircraft-carrier {
       background-color: $aircraft_color!important;

@@ -50,7 +50,7 @@ Box.prototype.addShip = function(size, className){
   this.ship = size;
   this.box.removeClass(String(this.className)).addClass(String(className));
   this.className = className;
-};
+}};
 
 // - Retourne un nombre aléatoire entre min et max
 function randomNumber(min, max) {
@@ -96,13 +96,13 @@ function getPossibleDir(x, y, grid, shipID) {
     possibleDir = [true, true, true, true],
     shipSize    = shipConst[shipID].size;
 
-  coefTab.forEach(function(value, index){
+  coefTab.forEach(function(value, index) { // for all direction
     for (i = 0; i < shipSize; i++) {
       if ((x+(i*value.x) < 0 || y+(i*value.y) < 0 || x+(i*value.x) > 9 || y+(i*value.y) > 9))
         possibleDir[index] = false;
     }
   });
-  possibleDir.forEach(function(value, index) {
+  possibleDir.forEach(function(value, index) { // for all possible directions
     if (value) for (i = 0; i < shipSize; i++)
       if (grid[(x+(i*coefTab[index].x))+(y+(i*coefTab[index].y))*gridSize].ship != 0)
         possibleDir[index] = false;
@@ -120,21 +120,22 @@ function clearGrid(grid) {
   });
 }
 
-function getDir(x1, y1, x2, y2, grid, shipID) {
-  shipSize = shipConst[shipID].size;
-  dir = -1;
-  check = true;
+function getDir(firstX, firstY, clickX, clickY, grid, shipID) {
+  var
+    shipSize = shipConst[shipID].size,
+    dir      = -1,
+    check    = true;
 
-  if (y1 === y2 && x2+(shipSize-1) === x1)
-    dir = 3;
-  if (y1 === y2 && x1+(shipSize-1) === x2)
-    dir = 1;
-  if (x1 === x2 && y1+(shipSize-1) === y2)
-    dir = 2;
-  if (x1 === x2 && y2+(shipSize-1) === y1)
-    dir = 0;
+  if (firstY === clickY && clickX+(shipSize-1) === firstX)
+    dir = 3; // left
+  if (firstY === clickY && firstX+(shipSize-1) === clickX)
+    dir = 1; // right
+  if (firstX === clickX && firstY+(shipSize-1) === clickY)
+    dir = 2; // bottom
+  if (firstX === clickX && clickY+(shipSize-1) === firstY)
+    dir = 0; // top
   if (dir != -1) for (i = 0; i < shipSize; i++)
-    if (grid[(coefTab[dir].x*i+x1)+(coefTab[dir].y*i+y1)*gridSize].ship)
+    if (grid[(coefTab[dir].x*i+firstX)+(coefTab[dir].y*i+firstY)*gridSize].ship)
       check = false;
   check ? dir = dir : dir = -1
   return dir;
@@ -144,26 +145,29 @@ function getDir(x1, y1, x2, y2, grid, shipID) {
 function clickOnPlayerGrid(grid) {
   var 
     shipID = 0,
-    saveX = [],
-    saveY = [];
+    saveX  = [],
+    saveY  = [],
+    firstX = 0,
+    firstY = 0;
 
   // Si les bateaux ne sont pas placer les faire placer au joueur
   if (shipID < shipConst.length) {
     $('.grid2 .box').click(function() {
-      x = parseInt($(this).attr('data-x'));
-      y = parseInt($(this).attr('data-y'));
-      var 
-        possibleDir = getPossibleDir(x, y, grid, shipID),
+      var
+        clickX    = parseInt($(this).attr('data-x')),
+        clickY    = parseInt($(this).attr('data-y')),
+        dirTab    = getPossibleDir(clickX, clickY, grid, shipID),
         boatIsPut = false;
-      saveX.push(x);
-      saveY.push(y);
+        
+      saveX.push(clickX); // Save click coordinates
+      saveY.push(clickY);
       if (saveX.length > 1 && saveY.length > 1) { // player click on <1 boxes
-        var firstX = saveX[saveX.length-2];
-        var firstY = saveY[saveY.length-2];
+        firstX = saveX[saveX.length-2];
+        firstY = saveY[saveY.length-2];
         // selected box is not a ship
-        if (!grid[firstX+firstY*gridSize].ship && !grid[x+y*gridSize].ship) {
+        if (!grid[firstX+firstY*gridSize].ship && !grid[clickX+clickY*gridSize].ship) {
           // get direction of selected boxes
-          dir = getDir(firstX, firstY, x, y, grid, shipID);
+          dir = getDir(firstX, firstY, clickX, clickY, grid, shipID);
           if (dir != -1) {
             // put one ship in grid
             putOneShip(grid, firstX, firstY, dir, shipID);
@@ -174,10 +178,10 @@ function clickOnPlayerGrid(grid) {
       }
       clearGrid(grid);
       if (!boatIsPut) // Display possible selection
-        possibleDir.forEach(function(value, index){
+        dirTab.forEach(function(value, index){
           if (value) for (i = 0; i < shipConst[shipID].size; i++) {
             (i === shipConst[shipID].size-1) ? className = 'possible' : className = 'clicked'
-            grid[(x+(i*coefTab[index].x))+(y+(i*coefTab[index].y))*gridSize].color(className);
+            grid[(clickX+(i*coefTab[index].x))+(clickY+(i*coefTab[index].y))*gridSize].color(className);
           }
         });
     });
@@ -203,22 +207,22 @@ function getSelectDir(dirTab) {
   return randDir;
 }
 
-// Ajoute de facon aleatoire tout les bateaux dans la grille
+// - Ajoute de facon aleatoire tout les bateaux dans la grille
 function putRandShips(grid) {
   var
-    maxRandomize = 0;
-    randX = randomNumber(0, gridSize),
-    randY = randomNumber(0, gridSize);
+    maxLoop = 0;
+    randX   = randomNumber(0, gridSize),
+    randY   = randomNumber(0, gridSize);
 
   shipConst.forEach(function(value, index) {
-    while (grid[randX+randY*gridSize].ship 
+    while (grid[randX+randY*gridSize].ship  // Get possible coordinates
       && possibleToPutShip(randX, randY, grid, index)
-      && maxRandomize < 1000) {
+      && maxLoop < 1000) {
       randX = randomNumber(0, gridSize);
       randY = randomNumber(0, gridSize);
     }
-    dirTab = getPossibleDir(randX, randY, grid, index);
-    putOneShip(grid, randX, randY, getSelectDir(dirTab), index);
+    dirTab = getPossibleDir(randX, randY, grid, index); // get possible direction
+    putOneShip(grid, randX, randY, getSelectDir(dirTab), index); // add ship in grid
   });
 }
 
@@ -226,9 +230,9 @@ function putRandShips(grid) {
 function mainGame()
 {
   var
-    shipID = 0,
-    playerGrid  = newGrid(2),
-    computGrid  = newGrid(1);
+    shipID     = 0,
+    playerGrid = newGrid(2),
+    computGrid = newGrid(1);
 
   initAttributGrid();
   putRandShips(computGrid);
