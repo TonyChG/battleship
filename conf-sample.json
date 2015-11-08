@@ -1,6 +1,6 @@
 {
     "startfile": "index.html",
-    "enable_js_hint": false,
+    "enable_js_hint": true,
     "path": {
         "js": ["./app/utils.js", "./app/game.js"],
         "jshint": ".jshintrc",

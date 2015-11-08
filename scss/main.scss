@@ -36,7 +36,7 @@
 		margin: 5.77px 3px; cursor: pointer;
 		border-left: 1px solid #ABABAB;
 		border-right: 1px solid #ABABAB;
-		@include transition(background-color .3s cubic-bezier(0.65, 0, 1, 0.37));
+		@include transition(background-color .2s cubic-bezier(0.65, 0, 1, 0.37));
 		&:before {
 			@include transition(border-bottom .2s cubic-bezier(0.65, 0, 1, 0.37));
 		}

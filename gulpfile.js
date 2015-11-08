@@ -21,7 +21,7 @@ var conf = require('./config.json');
 
 // [Task] Concat .js files + JSHINT
 gulp.task('js-jshint', function(){
-    return gulp.src(['!app/jquery.js', 'app/*.js'])
+    return gulp.src(['!app/jquery.js', 'app/game.js'])
         .pipe(jshint(conf.path.jshint))
         .pipe(jshint.reporter(stylish))
         .pipe(concat(conf.build_appname))
