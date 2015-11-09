@@ -24,16 +24,17 @@ gulp.task('js-jshint', function(){
     return gulp.src(['!app/jquery.js', 'app/game.js'])
         .pipe(jshint(conf.path.jshint))
         .pipe(jshint.reporter(stylish))
-        .pipe(concat(conf.build_appname))
         .pipe(uglify())
+        .pipe(concat(conf.build_appname))
         .pipe(gulp.dest(conf.path.build_js));
 });
 
 // [Task] Concat .js files
 gulp.task('js', function(){
     return gulp.src(conf.path.js)
-        .pipe(uglify())
         .pipe(concat(conf.build_appname))
+        .pipe(gulp.dest(conf.path.build_js))
+        .pipe(uglify())
         .pipe(gulp.dest(conf.path.build_js));
 });
 

@@ -1,5 +1,4 @@
 (function($){
-    "use script";
     $.fn.isolatedScroll = function( options ){
         "use script";
         defaults = {
