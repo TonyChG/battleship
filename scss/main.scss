@@ -44,6 +44,18 @@
 			@include transition(border-top .2s cubic-bezier(0.65, 0, 1, 0.37));
 		}
 
+    &.played_ship {
+      background-color: $played_ship_color!important;
+      &:before { border-bottom: 5.77px solid $played_ship_color; }
+      &:after { border-top: 5.77px solid $played_ship_color; }      
+    }
+ 
+    &.played_nothing {
+      background-color: $played_nothing_color!important;
+      &:before { border-bottom: 5.77px solid $played_nothing_color; }
+      &:after { border-top: 5.77px solid $played_nothing_color; }      
+    }
+
     &.aircraft-carrier {
       background-color: $aircraft_color!important;
       &:before { border-bottom: 5.77px solid $aircraft_color; }
