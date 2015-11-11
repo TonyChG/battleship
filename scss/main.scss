@@ -47,13 +47,13 @@
     &.played_ship {
       background-color: $played_ship_color!important;
       &:before { border-bottom: 5.77px solid $played_ship_color; }
-      &:after { border-top: 5.77px solid $played_ship_color; }      
+      &:after { border-top: 5.77px solid $played_ship_color; }
     }
- 
+
     &.played_nothing {
       background-color: $played_nothing_color!important;
       &:before { border-bottom: 5.77px solid $played_nothing_color; }
-      &:after { border-top: 5.77px solid $played_nothing_color; }      
+      &:after { border-top: 5.77px solid $played_nothing_color; }
     }
 
     &.aircraft-carrier {

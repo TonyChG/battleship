@@ -1,13 +1,14 @@
 {
     "startfile": "index.html",
-    "enable_js_hint": true,
+    "enable_js_hint": false,
     "path": {
         "js": ["./app/utils.js", "./app/game.js"],
         "jshint": ".jshintrc",
+        "jshint_files": ["!app/jquery.js", "app/game.js"],
         "sass": ["scss/*.scss"],
         "css": ".",
         "sourcemap": ".",
-        "build_js": "."
+        "dist_js": "dist"
     },
     "sass_opt": {
         "outputStyle": "compressed"

@@ -20,6 +20,7 @@
 }(jQuery));
 
 $(window).load(function() {
+    console.log('loaded -- sourcemap OK ?');
     var timer = null;
     var wheeling = false;
     $('.flexslider').isolatedScroll();
